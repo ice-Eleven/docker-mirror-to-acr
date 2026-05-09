@@ -1,0 +1,30 @@
+name: Build OpenClaw Image to Aliyun ACR
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout OpenClaw source
+        uses: actions/checkout@v4
+        with:
+          repository: openclaw/openclaw
+          ref: main
+
+      - name: Login to Aliyun ACR
+        run: |
+          echo "${{ secrets.ACR_PASSWORD }}" | docker login ${{ secrets.ACR_REGISTRY }} \
+            -u "${{ secrets.ACR_USERNAME }}" --password-stdin
+
+      - name: Build OpenClaw image
+        run: |
+          docker build \
+            -t ${{ secrets.ACR_REGISTRY }}/${{ secrets.ACR_NAMESPACE }}/openclaw:latest \
+            .
+
+      - name: Push OpenClaw image
+        run: |
+          docker push ${{ secrets.ACR_REGISTRY }}/${{ secrets.ACR_NAMESPACE }}/openclaw:latest
