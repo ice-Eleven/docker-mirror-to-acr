@@ -30,3 +30,8 @@ jobs:
           docker pull oven/bun:1.3.13
           docker tag oven/bun:1.3.13 ${{ secrets.ACR_REGISTRY }}/${{ secrets.ACR_NAMESPACE }}/bun:1.3.13
           docker push ${{ secrets.ACR_REGISTRY }}/${{ secrets.ACR_NAMESPACE }}/bun:1.3.13
+      - name: Mirror docker/dockerfile:1.7
+        run: |
+          docker pull docker/dockerfile:1.7
+          docker tag docker/dockerfile:1.7 ${{ secrets.ACR_REGISTRY }}/${{ secrets.ACR_NAMESPACE }}/dockerfile:1.7
+          docker push ${{ secrets.ACR_REGISTRY }}/${{ secrets.ACR_NAMESPACE }}/dockerfile:1.7
